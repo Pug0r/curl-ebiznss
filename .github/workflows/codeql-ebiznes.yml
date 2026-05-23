@@ -101,3 +101,17 @@ jobs:
       uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
+
+  lint:
+      name: Lint Code Base
+      runs-on: ubuntu-latest
+  
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+  
+      - name: Run Clang-Format Linter
+        run: |
+          sudo apt-get update && sudo apt-get install -y clang-format
+          # Sprawdzenie poprawności formatowania plików źródłowych .c i .h
+          find lib src -name '*.c' -o -name '*.h' | xargs clang-format --dry-run --Werror
